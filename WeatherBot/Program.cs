@@ -8,6 +8,7 @@ builder.Services.Configure<WeatherApiSettings>(builder.Configuration.GetRequired
 builder.Services.Configure<BotSettings>(builder.Configuration.GetRequiredSection(BotSettings.Path));
 builder.Services.AddOpenWeatherMap();
 builder.Services.AddTelegramBot(builder.Configuration);
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<OpenWeatherMapApiMapping>());
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 var app = builder.Build();

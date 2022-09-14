@@ -33,7 +33,7 @@ namespace WeatherBot.Integration.Telegram.Services
             var args = command.Split(' ');
             args[0] = args[0].ToLower();
             if (_commands.TryGetValue(args[0], out var botCommand))
-                await botCommand.Execute(update, args);
+                await botCommand.Execute(update, args.Skip(1).ToArray());
         }
 
         private async Task HandleMessage(Update update)

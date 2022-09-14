@@ -19,18 +19,18 @@ namespace WeatherBot.Integration.Telegram.Commands
             if (args.Length < 1)
                 return;
 
-            var city = args[1];
+            var city = args[0];
             var weather = _weatherApiService.GetCityWeather(city);
 
             var chatId = update.Message.Chat.Id;
 
-            var message = $"Погода в городе {weather.City} за {weather.Date}:\n" +
+            var message = $"Погода в городе {weather.City} за {weather.Date.ToShortTimeString()}\n" +
                 $"Погода: {string.Join(", ", weather.Weather)}\n" +
                 $"Температура: {weather.Temperture}, Ощущаеться как: {weather.FeelsLike}\n" +
                 $"Атмосферное давление: {weather.PressureMmHg} мм. рт. \n" +
                 $"Влажность: {weather.Humidity}\n" +
-                $"Ветер: {weather.WindSpeed} м/с. Направление: {weather.WindDegress}\n" +
-                $"Порыв: {weather.WindGust}";
+                $"Ветер: {weather.WindSpeed:f1} м/с. Направление: {weather.WindDegress}\n" +
+                $"Порыв: {weather.WindGust:f1} м/c.";
 
             await Client.SendTextMessageAsync(chatId, message);
         }
