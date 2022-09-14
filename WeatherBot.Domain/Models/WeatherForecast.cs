@@ -8,17 +8,12 @@
         public double FeelsLike { get; init; }
         public int Humidity { get; init; }
         /// <summary>
-        /// Давление в мм. рт. с.
+        /// Давление в мм. рт.
         /// </summary>
-        public int PressureMmHg { get; init; }
-        public Wind Wind { get; set; } = null!;
+        public int PressureMmHg { get; init; }        
+        public double WindSpeed { get; set; }
+        public int WindDegress { get; set; }
+        public double WindGust { get; set; }
 
-    }
-
-    public class Wind
-    {        
-        public double Speed { get; set; }        
-        public int Degress { get; set; }        
-        public double Gust { get; set; }
-    }
+    }    
 }
