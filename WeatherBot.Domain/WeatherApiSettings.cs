@@ -1,6 +1,6 @@
 ﻿namespace WeatherBot.Domain
 {
-    public class WeatherApiOptions
+    public class WeatherApiSettings
     {
         public const string Path = "WeatherApiSettings";
         public string Url { get; init; } = string.Empty;

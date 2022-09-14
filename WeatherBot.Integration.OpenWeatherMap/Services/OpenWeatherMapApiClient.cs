@@ -11,11 +11,11 @@ namespace WeatherBot.Integration.OpenWeatherMap.Services
 {
     public class OpenWeatherMapApiClient : IWeatherApiService
     {
-        private readonly WeatherApiOptions _options;
+        private readonly WeatherApiSettings _options;
         private readonly HttpClient _client;        
         private readonly IMapper _mapper;
 
-        public OpenWeatherMapApiClient(IOptions<WeatherApiOptions> options, IMapper mapper)
+        public OpenWeatherMapApiClient(IOptions<WeatherApiSettings> options, IMapper mapper)
         {
             _client = new HttpClient();            
             _mapper = mapper;

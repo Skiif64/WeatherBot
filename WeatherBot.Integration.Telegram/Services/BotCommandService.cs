@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 using WeatherBot.Integration.Telegram.Commands;
 
 namespace WeatherBot.Integration.Telegram.Services
@@ -11,7 +12,7 @@ namespace WeatherBot.Integration.Telegram.Services
         {
             var commands = provider.GetServices<BotCommandBase>();
             _commands = new Dictionary<string, BotCommandBase>();
-            foreach(var command in commands)
+            foreach (var command in commands)
             {
                 _commands.Add(command.Name, command);
             }
@@ -19,13 +20,29 @@ namespace WeatherBot.Integration.Telegram.Services
 
         public async Task HandleUpdate(Update update)
         {
+            var handler = update.Type switch
+            {
+                UpdateType.Message => HandleMessage(update)
+            };
 
+            await handler;
         }
 
-        public async Task ExecuteCommand(string command, Update update)
+        private async Task ExecuteCommand(string command, Update update)
         {
             var args = command.Split(' ');
-            await _commands[args[0].ToLower()].Execute(update);
+            args[0] = args[0].ToLower();
+            if (_commands.TryGetValue(args[0], out var botCommand))
+                await botCommand.Execute(update, args);
+        }
+
+        private async Task HandleMessage(Update update)
+        {
+            var text = update.Message?.Text;
+            if (text == null)
+                return;
+
+            await ExecuteCommand(text, update);
         }
 
 

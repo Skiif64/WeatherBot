@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WeatherBot.Domain\WeatherBot.Domain.csproj" />
     <ProjectReference Include="..\WeatherBot.Integration.OpenWeatherMap\WeatherBot.Integration.OpenWeatherMap.csproj" />
+    <ProjectReference Include="..\WeatherBot.Integration.Telegram\WeatherBot.Integration.Telegram.csproj" />
   </ItemGroup>
 
 </Project>
