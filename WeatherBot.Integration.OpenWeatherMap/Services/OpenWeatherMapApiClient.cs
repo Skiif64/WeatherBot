@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.Extensions.Options;
 using System.Text.Json;
+using WeatherBot.Domain;
 using WeatherBot.Domain.Interfaces;
 using WeatherBot.Domain.Models;
 using WeatherBot.Integration.OpenWeatherMap.Models;
@@ -8,22 +11,20 @@ namespace WeatherBot.Integration.OpenWeatherMap.Services
 {
     public class OpenWeatherMapApiClient : IWeatherApiService
     {
-        private const string URL = "https://api.openweathermap.org/data/2.5/weather";
-
-        private readonly HttpClient _client;
-        private readonly string _appId;
+        private readonly WeatherApiOptions _options;
+        private readonly HttpClient _client;        
         private readonly IMapper _mapper;
 
-        public OpenWeatherMapApiClient(string appId, IMapper mapper)
+        public OpenWeatherMapApiClient(IOptions<WeatherApiOptions> options, IMapper mapper)
         {
-            _client = new HttpClient();
-            _appId = appId;
+            _client = new HttpClient();            
             _mapper = mapper;
+            _options = options.Value;
         }
 
         public WeatherForecast GetCityWeather(string cityName)
         {
-            var uri = $"{URL}?q={cityName}&appid={_appId}&units=metric&lang=ru";            
+            var uri = $"{_options.Url}?q={cityName}&appid={_options.ApiToken}&units=metric&lang=ru";            
             
             var json = _client.GetStringAsync(uri).Result;
             var response = JsonSerializer.Deserialize<WeatherForecastResponse>(json);
