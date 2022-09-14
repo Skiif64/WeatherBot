@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherBot.Integration.Open
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherBot.CMD", "WeatherBot.CMD\WeatherBot.CMD.csproj", "{87A831D0-C982-4288-8EB6-59083F3B504B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherBot.Domain", "WeatherBot.Domain\WeatherBot.Domain.csproj", "{F031CBAC-4DD2-4F85-9875-CC50C5D4E3B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherBot.Domain", "WeatherBot.Domain\WeatherBot.Domain.csproj", "{F031CBAC-4DD2-4F85-9875-CC50C5D4E3B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherBot.Integration.Telegram", "WeatherBot.Integration.Telegram\WeatherBot.Integration.Telegram.csproj", "{BF87B250-9233-4CE1-8861-960433E821B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{F031CBAC-4DD2-4F85-9875-CC50C5D4E3B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F031CBAC-4DD2-4F85-9875-CC50C5D4E3B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F031CBAC-4DD2-4F85-9875-CC50C5D4E3B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF87B250-9233-4CE1-8861-960433E821B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF87B250-9233-4CE1-8861-960433E821B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF87B250-9233-4CE1-8861-960433E821B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF87B250-9233-4CE1-8861-960433E821B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
