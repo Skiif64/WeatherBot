@@ -9,6 +9,8 @@ namespace WeatherBot.Integration.OpenWeatherMap
         public OpenWeatherMapApiMapping()
         {
             CreateMap<WeatherForecastResponse, WeatherForecast>()
+                .ForMember(dest => dest.City,
+                opt => opt.MapFrom(source => source.Name))
                 .ForMember(dest => dest.Weather,
                 opt => opt.MapFrom(source => source.Weather.Select(p => p.Description)))
                 .ForMember(dest => dest.Date,

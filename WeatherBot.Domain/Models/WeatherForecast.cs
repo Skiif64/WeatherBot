@@ -2,10 +2,11 @@
 {
     public class WeatherForecast
     {
+        public string City { get; set; } = string.Empty;
         public string[] Weather { get; init; } = null!;
         public DateTime Date { get; init; }
-        public double Temperture { get; init; }
-        public double FeelsLike { get; init; }
+        public int Temperture { get; init; }
+        public int FeelsLike { get; init; }
         public int Humidity { get; init; }
         /// <summary>
         /// Давление в мм. рт.
