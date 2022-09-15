@@ -20,11 +20,11 @@ namespace WeatherBot.Integration.Telegram.Commands
             if (args.Length < 1)
             {
                 await Client.SendTextMessageAsync(chatId, "Нет названия города");
-                return;            
+                return;
             }
             
             var city = args[0];
-            var weather = _weatherApiService.GetCityWeather(city);
+            var weather = await _weatherApiService.GetCityWeather(city);
             if(weather == null)
             {
                 await Client.SendTextMessageAsync(chatId, "Неправильное название города и/или ошибка api.");
