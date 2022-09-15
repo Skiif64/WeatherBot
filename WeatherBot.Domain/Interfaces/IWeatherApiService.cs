@@ -4,6 +4,6 @@ namespace WeatherBot.Domain.Interfaces
 {
     public interface IWeatherApiService
     {
-        WeatherForecast GetCityWeather(string cityName);
+        Task<WeatherForecast?> GetCityWeather(string cityName);
     }
 }
