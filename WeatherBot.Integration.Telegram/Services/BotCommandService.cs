@@ -22,11 +22,12 @@ namespace WeatherBot.Integration.Telegram.Services
         {
             var handler = update.Type switch
             {
-                UpdateType.Message => HandleMessage(update)
+                UpdateType.Message => HandleMessage(update),
+                _ => HandleUnknown(update)
             };
 
             await handler;
-        }
+        }        
 
         private async Task ExecuteCommand(string command, Update update)
         {
@@ -43,6 +44,11 @@ namespace WeatherBot.Integration.Telegram.Services
                 return;
 
             await ExecuteCommand(text, update);
+        }
+
+        private Task HandleUnknown(Update update)
+        {
+            return Task.CompletedTask;
         }
 
 

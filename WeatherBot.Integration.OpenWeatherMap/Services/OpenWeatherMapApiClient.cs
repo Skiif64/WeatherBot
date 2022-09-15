@@ -22,11 +22,14 @@ namespace WeatherBot.Integration.OpenWeatherMap.Services
             _options = options.Value;
         }
 
-        public WeatherForecast GetCityWeather(string cityName)
+        public WeatherForecast? GetCityWeather(string cityName)
         {
             var uri = $"{_options.Url}?q={cityName}&appid={_options.ApiToken}&units=metric&lang=ru";            
             
             var json = _client.GetStringAsync(uri).Result;
+            if (string.IsNullOrEmpty(json))
+                return null;
+
             var response = JsonSerializer.Deserialize<WeatherForecastResponse>(json);
             var result = _mapper.Map<WeatherForecast>(response);
             return result;

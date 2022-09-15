@@ -16,13 +16,20 @@ namespace WeatherBot.Integration.Telegram.Commands
 
         public override async Task Execute(Update update, string[] args = null)
         {
+            var chatId = update.Message.Chat.Id;
             if (args.Length < 1)
-                return;
-
+            {
+                await Client.SendTextMessageAsync(chatId, "Нет названия города");
+                return;            
+            }
+            
             var city = args[0];
             var weather = _weatherApiService.GetCityWeather(city);
-
-            var chatId = update.Message.Chat.Id;
+            if(weather == null)
+            {
+                await Client.SendTextMessageAsync(chatId, "Неправильное название города и/или ошибка api.");
+                return;
+            }
 
             var message = $"Погода в городе {weather.City} за {weather.Date.ToShortTimeString()}\n" +
                 $"Погода: {string.Join(", ", weather.Weather)}\n" +
