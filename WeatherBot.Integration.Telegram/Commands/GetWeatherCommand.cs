@@ -14,9 +14,8 @@ namespace WeatherBot.Integration.Telegram.Commands
             _weatherApiService = weatherApiService;
         }
 
-        public override async Task Execute(Update update, string[] args = null)
-        {
-            var chatId = update.Message.Chat.Id;
+        public override async Task Execute(long chatId, string[] args = null)        {
+            
             if (args.Length < 1)
             {
                 await Client.SendTextMessageAsync(chatId, "Нет названия города");

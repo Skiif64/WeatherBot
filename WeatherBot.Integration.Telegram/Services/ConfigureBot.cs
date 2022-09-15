@@ -22,7 +22,7 @@ namespace WeatherBot.Integration.Telegram.Services
             await _client.SetWebhookAsync(
                 url: url,
                 allowedUpdates: Array.Empty<UpdateType>(),
-                cancellationToken: cancellationToken);
+                cancellationToken: cancellationToken);            
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

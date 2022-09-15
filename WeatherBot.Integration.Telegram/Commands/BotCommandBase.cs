@@ -13,7 +13,7 @@ namespace WeatherBot.Integration.Telegram.Commands
             Client = client;
         }
 
-        public abstract Task Execute(Update update, string[] args = null);
+        public abstract Task Execute(long chatId, string[] args = null);
 
     }
 }

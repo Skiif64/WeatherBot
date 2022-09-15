@@ -22,31 +22,33 @@ namespace WeatherBot.Integration.Telegram.Services
         {
             var handler = update.Type switch
             {
-                UpdateType.Message => HandleMessage(update),
-                _ => HandleUnknown(update)
+                UpdateType.Message => HandleMessage(update.Message),
+                _ => HandleUnknown(update.Message)
             };
 
             await handler;
         }        
 
-        private async Task ExecuteCommand(string command, Update update)
+        private async Task ExecuteCommand(string text, long chatId)
         {
-            var args = command.Split(' ');
+            var args = text.Split(' ');
             args[0] = args[0].ToLower();
             if (_commands.TryGetValue(args[0], out var botCommand))
-                await botCommand.Execute(update, args.Skip(1).ToArray());
+                await botCommand.Execute(chatId, args.Skip(1).ToArray());
         }
 
-        private async Task HandleMessage(Update update)
+        private async Task HandleMessage(Message? message)
         {
-            var text = update.Message?.Text;
-            if (text == null)
+            if (message == null || message.Text == null)
                 return;
 
-            await ExecuteCommand(text, update);
+            var text = message.Text;
+            var chatId = message.Chat.Id;            
+
+            await ExecuteCommand(text, chatId);
         }
 
-        private Task HandleUnknown(Update update)
+        private Task HandleUnknown(Message? message)
         {
             return Task.CompletedTask;
         }
