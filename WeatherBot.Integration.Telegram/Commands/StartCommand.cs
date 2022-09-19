@@ -22,7 +22,7 @@ namespace WeatherBot.Integration.Telegram.Commands
                 new KeyboardButton[] {"Погода"}
             })
             {
-                ResizeKeyboard = true
+                ResizeKeyboard = true                
             };
             await Client.SendTextMessageAsync(chatId, message, replyMarkup: replyMarkupKeyboard);
         }
