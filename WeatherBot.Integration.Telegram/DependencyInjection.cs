@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
 using WeatherBot.Integration.Telegram.Commands;
+using WeatherBot.Integration.Telegram.ConsecutiveCommands;
 using WeatherBot.Integration.Telegram.Services;
 
 namespace WeatherBot.Integration.Telegram
@@ -16,8 +17,9 @@ namespace WeatherBot.Integration.Telegram
             services.AddHostedService<ConfigureBot>();
             services.AddScoped<BotCommandService>();
             services.AddScoped<BotCommandBase, StartCommand>();
-            services.AddScoped<BotCommandBase, GetWeatherCommand>();
             services.AddScoped<BotCommandBase, WeatherCommand>();
+            services.AddScoped<BotCommandBase, HelpCommand>();
+            services.AddScoped<ConsecutiveCommandBase, GetWeatherCommand>();
             return services;
         }
     }

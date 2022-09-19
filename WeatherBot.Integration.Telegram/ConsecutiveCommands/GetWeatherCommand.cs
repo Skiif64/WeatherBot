@@ -1,10 +1,11 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using WeatherBot.Domain.Interfaces;
+using WeatherBot.Integration.Telegram.Commands;
 
-namespace WeatherBot.Integration.Telegram.Commands
+namespace WeatherBot.Integration.Telegram.ConsecutiveCommands
 {
-    public class GetWeatherCommand : BotCommandBase
+    public class GetWeatherCommand : ConsecutiveCommandBase
     {
         private readonly IWeatherApiService _weatherApiService;
         public override string Name => "/weather";
@@ -14,18 +15,26 @@ namespace WeatherBot.Integration.Telegram.Commands
             _weatherApiService = weatherApiService;
         }
 
-        public override async Task Execute(long chatId, string[] args = null)        
+        public override bool CanExecute(BotCommandBase previousCommand)
         {
-            
+            if (previousCommand.Name == "погода")
+                return true;
+
+            return false;
+        }
+
+        public override async Task Execute(long chatId, string[] args = null)
+        {
+
             if (args.Length < 1)
             {
                 await Client.SendTextMessageAsync(chatId, "Нет названия города");
                 return;
             }
-            
+
             var city = args[0];
             var weather = await _weatherApiService.GetCityWeather(city);
-            if(weather == null)
+            if (weather == null)
             {
                 await Client.SendTextMessageAsync(chatId, "Неправильное название города и/или ошибка api.");
                 return;
