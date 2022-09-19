@@ -16,6 +16,7 @@ namespace WeatherBot.Integration.Telegram
             services.AddHostedService<ConfigureBot>();
             services.AddScoped<BotCommandService>();
             services.AddScoped<BotCommandBase, GetWeatherCommand>();
+            services.AddScoped<BotCommandBase, WeatherCommand>();
             return services;
         }
     }

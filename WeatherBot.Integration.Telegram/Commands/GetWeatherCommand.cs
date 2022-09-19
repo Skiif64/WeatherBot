@@ -14,7 +14,8 @@ namespace WeatherBot.Integration.Telegram.Commands
             _weatherApiService = weatherApiService;
         }
 
-        public override async Task Execute(long chatId, string[] args = null)        {
+        public override async Task Execute(long chatId, string[] args = null)        
+        {
             
             if (args.Length < 1)
             {

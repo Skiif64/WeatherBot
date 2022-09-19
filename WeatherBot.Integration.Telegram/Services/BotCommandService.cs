@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using WeatherBot.Domain.Interfaces;
 using WeatherBot.Integration.Telegram.Commands;
 
 namespace WeatherBot.Integration.Telegram.Services
@@ -8,8 +9,10 @@ namespace WeatherBot.Integration.Telegram.Services
     public class BotCommandService
     {
         private readonly Dictionary<string, BotCommandBase> _commands;
-        public BotCommandService(IServiceProvider provider)
+        private readonly ILastCommandRepository _repository;
+        public BotCommandService(IServiceProvider provider, ILastCommandRepository repository)
         {
+            _repository = repository;
             var commands = provider.GetServices<BotCommandBase>();
             _commands = new Dictionary<string, BotCommandBase>();
             foreach (var command in commands)
@@ -27,14 +30,27 @@ namespace WeatherBot.Integration.Telegram.Services
             };
 
             await handler;
-        }        
+            var lastCommandEntity = _repository.GetLastCommand(update.Message.Chat.Id);
+            if (lastCommandEntity == null)
+                return;
+
+            var lastCommand = _commands.FirstOrDefault(c => c.Value.Name == lastCommandEntity.CommandName).Value;
+            if (update.Message.Text.ToLower().Contains(lastCommand.Name))
+                return;
+
+            if (lastCommand != null && lastCommand.Name == "погода")
+                await ExecuteCommand($"/weather {update.Message.Text}", update.Message.Chat.Id);
+        }
 
         private async Task ExecuteCommand(string text, long chatId)
         {
             var args = text.Split(' ');
             args[0] = args[0].ToLower();
             if (_commands.TryGetValue(args[0], out var botCommand))
+            {
                 await botCommand.Execute(chatId, args.Skip(1).ToArray());
+                _repository.AddOrUpdate(chatId, botCommand.Name);
+            }
         }
 
         private async Task HandleMessage(Message? message)
@@ -43,7 +59,7 @@ namespace WeatherBot.Integration.Telegram.Services
                 return;
 
             var text = message.Text;
-            var chatId = message.Chat.Id;            
+            var chatId = message.Chat.Id;
 
             await ExecuteCommand(text, chatId);
         }
