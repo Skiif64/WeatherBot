@@ -4,13 +4,13 @@ using Telegram.Bot.Types.Enums;
 using WeatherBot.Domain.Interfaces;
 using WeatherBot.Integration.Telegram.Abstractions;
 
-namespace WeatherBot.Integration.Telegram.Services
+namespace WeatherBot.Integration.Telegram.Handlers
 {
-    public class BotCommandService
+    public class UpdateHandler
     {
         private readonly Dictionary<string, BotCommandBase> _commands;
         private readonly ILastCommandRepository _repository;
-        public BotCommandService(IServiceProvider provider, ILastCommandRepository repository)
+        public UpdateHandler(IServiceProvider provider, ILastCommandRepository repository)
         {
             _repository = repository;
             var commands = provider.GetServices<BotCommandBase>();
@@ -51,14 +51,14 @@ namespace WeatherBot.Integration.Telegram.Services
             if (text.ToLower().Contains(lastCommand.CommandName))
                 return;
 
-           foreach(var command in _commands)
+            foreach (var command in _commands)
             {
-                if(command.Value.CanExecute(lastCommand.CommandName))
+                if (command.Value.CanExecute(lastCommand.CommandName))
                 {
-                    await command.Value.Execute(chatId, new[] {text});
+                    await command.Value.Execute(chatId, new[] { text });
                     return;
                 }
-            
+
             }
         }
 

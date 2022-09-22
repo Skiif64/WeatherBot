@@ -31,8 +31,8 @@ namespace WeatherBot.Integration.Telegram.Commands
             {
                 await Client.SendTextMessageAsync(chatId, "Неправильное название города и/или ошибка api.");
                 return;
-            }
-
+            }            
+            
             var message = $"Погода в городе {weather.City} за {weather.Date.ToShortTimeString()}\n" +
                 $"Погода: {string.Join(", ", weather.Weather)}\n" +
                 $"Температура: {weather.Temperture}, Ощущаеться как: {weather.FeelsLike}\n" +

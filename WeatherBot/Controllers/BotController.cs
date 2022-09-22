@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Telegram.Bot.Types;
-using WeatherBot.Integration.Telegram.Services;
+using WeatherBot.Integration.Telegram.Handlers;
 
 namespace WeatherBot.Controllers
 {
@@ -8,9 +8,9 @@ namespace WeatherBot.Controllers
     [Route("api/bot/")]
     public class BotController : ControllerBase
     {
-        private readonly BotCommandService _botCommandService;
+        private readonly UpdateHandler _botCommandService;
 
-        public BotController(BotCommandService botCommandService)
+        public BotController(UpdateHandler botCommandService)
         {
             _botCommandService = botCommandService;
         }

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 
-namespace WeatherBot.Integration.Telegram.Services
+namespace WeatherBot.Integration.Telegram
 {
     public class ConfigureBot : IHostedService
     {
@@ -22,7 +22,7 @@ namespace WeatherBot.Integration.Telegram.Services
             await _client.SetWebhookAsync(
                 url: url,
                 allowedUpdates: Array.Empty<UpdateType>(),
-                cancellationToken: cancellationToken);            
+                cancellationToken: cancellationToken);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
