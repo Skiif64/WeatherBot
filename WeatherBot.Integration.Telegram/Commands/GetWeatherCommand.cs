@@ -1,27 +1,20 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using WeatherBot.Domain.Interfaces;
-using WeatherBot.Integration.Telegram.Commands;
+using WeatherBot.Integration.Telegram.Abstractions;
 
-namespace WeatherBot.Integration.Telegram.ConsecutiveCommands
+namespace WeatherBot.Integration.Telegram.Commands
 {
-    public class GetWeatherCommand : ConsecutiveCommandBase
+    public class GetWeatherCommand : BotCommandBase
     {
         private readonly IWeatherApiService _weatherApiService;
         public override string Name => "/weather";
+        public override string RequiredLastCommandName => "погода";
 
         public GetWeatherCommand(ITelegramBotClient client, IWeatherApiService weatherApiService) : base(client)
         {
             _weatherApiService = weatherApiService;
-        }
-
-        public override bool CanExecute(BotCommandBase previousCommand)
-        {
-            if (previousCommand.Name == "погода")
-                return true;
-
-            return false;
-        }
+        }        
 
         public override async Task Execute(long chatId, string[] args = null)
         {

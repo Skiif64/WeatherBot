@@ -1,5 +1,6 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
+using WeatherBot.Integration.Telegram.Abstractions;
 
 namespace WeatherBot.Integration.Telegram.Commands
 {

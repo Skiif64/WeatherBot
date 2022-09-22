@@ -2,31 +2,22 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using WeatherBot.Domain.Interfaces;
-using WeatherBot.Integration.Telegram.Commands;
-using WeatherBot.Integration.Telegram.ConsecutiveCommands;
+using WeatherBot.Integration.Telegram.Abstractions;
 
 namespace WeatherBot.Integration.Telegram.Services
 {
     public class BotCommandService
     {
         private readonly Dictionary<string, BotCommandBase> _commands;
-        private readonly Dictionary<string, ConsecutiveCommandBase> _consecutiveCommands;
         private readonly ILastCommandRepository _repository;
         public BotCommandService(IServiceProvider provider, ILastCommandRepository repository)
         {
             _repository = repository;
             var commands = provider.GetServices<BotCommandBase>();
             _commands = new Dictionary<string, BotCommandBase>();
-            _consecutiveCommands = new Dictionary<string, ConsecutiveCommandBase>();
-            var consecutiveCommand = provider.GetServices<ConsecutiveCommandBase>();
             foreach (var command in commands)
             {
                 _commands.Add(command.Name, command);
-            }
-
-            foreach (var command in consecutiveCommand)
-            {
-                _consecutiveCommands.Add(command.Name, command);
             }
         }
 
@@ -38,8 +29,8 @@ namespace WeatherBot.Integration.Telegram.Services
                 _ => HandleUnknown(update.Message)
             };
 
-            await handler;            
-                
+            await handler;
+
         }
 
         private async Task ExecuteCommand(string text, long chatId)
@@ -52,18 +43,22 @@ namespace WeatherBot.Integration.Telegram.Services
                 _repository.AddOrUpdate(chatId, botCommand.Name);
             }
 
-            var lastCommandEntity = _repository.GetLastCommand(chatId);
-            if (lastCommandEntity == null)
+            var lastCommand = _repository.GetLastCommand(chatId);
+            if (lastCommand == null)
                 return;
 
-            var lastCommand = _commands.FirstOrDefault(c => c.Value.Name == lastCommandEntity.CommandName).Value;
-            if (text.ToLower().Contains(lastCommand.Name))
+
+            if (text.ToLower().Contains(lastCommand.CommandName))
                 return;
 
-            foreach (var command in _consecutiveCommands)
+           foreach(var command in _commands)
             {
-                if (command.Value.CanExecute(lastCommand))
-                    await command.Value.Execute(chatId, new[] { text });
+                if(command.Value.CanExecute(lastCommand.CommandName))
+                {
+                    await command.Value.Execute(chatId, new[] {text});
+                    return;
+                }
+            
             }
         }
 
