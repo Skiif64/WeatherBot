@@ -15,7 +15,8 @@ namespace WeatherBot.Integration.Telegram
 
             services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(token));
             services.AddHostedService<ConfigureBot>();
-            services.AddScoped<UpdateHandler>();
+            services.AddScoped<UpdateHandler>();            
+
             services.AddTransient<BotCommandBase, StartCommand>();
             services.AddTransient<BotCommandBase, WeatherCommand>();
             services.AddTransient<BotCommandBase, HelpCommand>();

@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  weatherbot:
+    image: ${DOCKER_REGISTRY-}weatherbot
+    build:
+      context: .
+      dockerfile: WeatherBot/Dockerfile

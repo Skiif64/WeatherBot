@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  weatherbot:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Default=Data Source=Database.db;
+      - BotSettings__HookUrl=https://ae34-95-28-187-78.eu.ngrok.io
+    ports:
+      - "80:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro      
+    command: ["dotnet", "ef", "database update"]

@@ -8,12 +8,12 @@ namespace WeatherBot.Integration.Telegram
     public class ConfigureBot : IHostedService
     {
         private readonly ITelegramBotClient _client;
-        private readonly BotSettings _settings;
+        private readonly BotSettings _settings;        
 
         public ConfigureBot(IOptions<BotSettings> settings, ITelegramBotClient client)
         {
             _settings = settings.Value;
-            _client = client;
+            _client = client;           
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
