@@ -7,6 +7,10 @@ using WeatherBot.Integration.Telegram;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(opt => opt.AddPolicy("CorsPolicy", builder =>
+{
+    builder.AllowAnyOrigin();
+}));
 builder.Services.Configure<WeatherApiSettings>(builder.Configuration.GetRequiredSection(WeatherApiSettings.Path));
 builder.Services.Configure<BotSettings>(builder.Configuration.GetRequiredSection(BotSettings.Path));
 var connectionString = builder.Configuration.GetConnectionString("Default");
@@ -20,6 +24,6 @@ builder.Services.AddControllers().AddNewtonsoftJson();
 var app = builder.Build();
 
 //app.UseHttpsRedirection();
+app.UseCors("CorsPolicy");
 app.MapControllers();
-
 app.Run();
